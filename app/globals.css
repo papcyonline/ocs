@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+@theme {
+  --color-oranje-50: #fff4ea;
+  --color-oranje-100: #ffe2c7;
+  --color-oranje-200: #ffc28a;
+  --color-oranje-400: #ff8a33;
+  --color-oranje-500: #ff6b00;
+  --color-oranje-600: #e55c00;
+  --color-oranje-700: #b84800;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-mosvita), ui-sans-serif, system-ui, sans-serif;
+  --font-display-expanded: var(--font-mosvita-expanded), ui-sans-serif, system-ui, sans-serif;
+
+  --animate-marquee: marquee 45s linear infinite;
+  --animate-hero-carousel: hero-carousel 18s ease-in-out infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes hero-carousel {
+  0%,
+  28% {
+    opacity: 1;
+  }
+  33%,
+  95% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+html,
+body {
+  background-color: #ffffff;
+  color: #0a0a0a;
+}
