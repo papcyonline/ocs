@@ -6,6 +6,7 @@ import heroImage2 from "@/Images/pexels-tima-miroshnichenko-6195136.jpg";
 import heroImage3 from "@/Images/pexels-tima-miroshnichenko-6195125.jpg";
 import { GoogleLogo, YelpLogo, BBBLogo } from "@/components/BrandLogos";
 import { AnimatedArrow } from "@/components/icons";
+import { QuoteButton } from "@/components/QuoteButton";
 
 const heroSlides = [
   {
@@ -71,13 +72,10 @@ export function Hero() {
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:flex-wrap sm:items-center">
-              <a
-                href="#quote"
-                className="group inline-flex items-center justify-center gap-2 rounded-full bg-oranje-500 px-7 py-3.5 text-base font-medium text-white transition-colors duration-200 hover:bg-oranje-600"
-              >
+              <QuoteButton className="group inline-flex items-center justify-center gap-2 rounded-full bg-oranje-500 px-7 py-3.5 text-base font-medium text-white transition-colors duration-200 hover:bg-oranje-600">
                 Get Free Quote
                 <AnimatedArrow className="h-6 w-6" />
-              </a>
+              </QuoteButton>
               <a
                 href={site.phoneHref}
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 text-base font-medium text-black transition-colors duration-200 hover:bg-neutral-100"

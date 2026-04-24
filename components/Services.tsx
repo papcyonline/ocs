@@ -1,67 +1,71 @@
+import Image from "next/image";
 import {
   House,
   Buildings,
   HardHat,
   Check,
 } from "@phosphor-icons/react/dist/ssr";
-import { AnimatedArrow } from "@/components/icons";
+import residentialImg from "@/Images/pexels-tima-miroshnichenko-6196677.jpg";
+import commercialImg from "@/Images/pexels-tima-miroshnichenko-6195277.jpg";
+import postBuildImg from "@/Images/pexels-tima-miroshnichenko-6195276.jpg";
 
 const services = [
   {
     title: "Residential",
     icon: House,
-    description: "Homes that feel brand new.",
     items: [
       "One-time deep cleans",
       "Recurring (weekly, bi-weekly, monthly)",
       "Move-in & move-out",
       "Inside oven & fridge",
-      "Carpets & windows",
     ],
-    href: "#residential",
+    image: residentialImg,
+    imageAlt: "OCS crew working in a residential kitchen",
   },
   {
     title: "Commercial",
     icon: Buildings,
-    description: "Offices, retail, shared spaces.",
     items: [
       "Office & janitorial",
       "Restroom services",
       "Strip & wax",
       "Pressure washing",
-      "Daily disinfecting",
     ],
-    href: "#commercial",
+    image: commercialImg,
+    imageAlt: "OCS team arriving on-site with professional cleaning equipment",
   },
   {
     title: "Post-Construction",
     icon: HardHat,
-    description: "After-build polish, ready for handover.",
     items: [
       "New construction cleans",
       "Terminal cleaning",
       "Window & glass",
       "Debris removal",
-      "Final disinfecting",
     ],
-    href: "#post-construction",
+    image: postBuildImg,
+    imageAlt:
+      "OCS technician on a ladder cleaning a tall surface after construction",
   },
 ];
 
 export function Services() {
   return (
-    <section id="services" className="relative z-20 bg-oranje-50 md:sticky md:top-0 md:min-h-[150svh]">
-      <div className="mx-auto max-w-7xl px-5 py-16 sm:px-6 md:py-20">
+    <section
+      id="services"
+      className="relative z-20 bg-oranje-50 md:sticky md:top-0 md:min-h-[150svh]"
+    >
+      <div className="mx-auto max-w-7xl px-5 py-14 sm:px-6 md:py-16">
         <div className="max-w-3xl">
           <p className="text-[10px] font-semibold uppercase tracking-[0.25em] text-oranje-700 sm:text-xs">
             Our services
           </p>
-          <h2 className="mt-4 font-display text-4xl tracking-tight text-black sm:mt-5 sm:text-5xl md:text-5xl">
+          <h2 className="mt-3 font-display text-3xl tracking-tight text-black sm:mt-4 sm:text-4xl md:text-5xl">
             What we clean.
           </h2>
         </div>
 
-        <div className="mt-10 h-px w-full bg-oranje-200 md:mt-12" />
+        <div className="mt-8 h-px w-full bg-oranje-200 md:mt-10" />
 
         <div className="grid divide-y divide-oranje-200 md:grid-cols-3 md:divide-x md:divide-y-0">
           {services.map((service, i) => {
@@ -71,44 +75,45 @@ export function Services() {
             return (
               <article
                 key={service.title}
-                className={`py-8 md:py-10 ${
+                className={`py-6 md:py-8 ${
                   isFirst
-                    ? "md:pr-10 md:pl-0"
+                    ? "md:pr-6 md:pl-0"
                     : isLast
-                      ? "md:pl-10 md:pr-0"
-                      : "md:px-10"
+                      ? "md:pl-6 md:pr-0"
+                      : "md:px-6"
                 }`}
               >
-                <Icon weight="bold" className="h-12 w-12 text-oranje-600" />
-                <h3 className="mt-6 font-display text-3xl text-black md:text-4xl">
-                  {service.title}
-                </h3>
-                <p className="mt-3 text-base text-neutral-700">
-                  {service.description}
-                </p>
+                <div className="overflow-hidden rounded-2xl">
+                  <Image
+                    src={service.image}
+                    alt={service.imageAlt}
+                    placeholder="blur"
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className="h-32 w-full object-cover object-top md:h-36 lg:h-40"
+                  />
+                </div>
 
-                <ul className="mt-7 space-y-3.5">
+                <div className="mt-5 flex items-center gap-3">
+                  <Icon weight="bold" className="h-6 w-6 text-oranje-600" />
+                  <h3 className="font-display text-xl text-black md:text-2xl">
+                    {service.title}
+                  </h3>
+                </div>
+
+                <ul className="mt-4 space-y-2.5">
                   {service.items.map((item) => (
                     <li
                       key={item}
-                      className="flex items-start gap-3 text-base font-medium text-neutral-900"
+                      className="flex items-start gap-2.5 text-sm font-medium text-neutral-900"
                     >
                       <Check
                         weight="bold"
-                        className="mt-0.5 h-5 w-5 shrink-0 text-oranje-600"
+                        className="mt-0.5 h-4 w-4 shrink-0 text-oranje-600"
                       />
                       <span>{item}</span>
                     </li>
                   ))}
                 </ul>
-
-                <a
-                  href={service.href}
-                  className="group mt-9 inline-flex items-center gap-2 text-sm font-semibold text-black transition-colors hover:text-oranje-700"
-                >
-                  Explore
-                  <AnimatedArrow className="h-5 w-5" />
-                </a>
               </article>
             );
           })}

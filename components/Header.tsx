@@ -5,10 +5,25 @@ import Link from "next/link";
 import { List, X, Phone } from "@phosphor-icons/react";
 import { site } from "@/lib/site";
 import { AnimatedArrow, ArrowUpRight } from "@/components/icons";
+import { useQuoteModal } from "@/components/QuoteModalContext";
+
+const HEADER_OFFSET = 96; // px — clears the floating header
+
+function scrollToHash(e: React.MouseEvent<HTMLAnchorElement>, hash: string) {
+  if (!hash.startsWith("#")) return;
+  const el = document.querySelector(hash);
+  if (!el) return;
+  e.preventDefault();
+  const top =
+    el.getBoundingClientRect().top + window.scrollY - HEADER_OFFSET;
+  window.scrollTo({ top, behavior: "smooth" });
+  history.pushState(null, "", hash);
+}
 
 export function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { open: openQuote } = useQuoteModal();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -42,23 +57,25 @@ export function Header() {
 
           <nav className="hidden items-center gap-8 md:flex">
             {site.nav.map((item) => (
-              <Link
+              <a
                 key={item.href}
                 href={item.href}
+                onClick={(e) => scrollToHash(e, item.href)}
                 className="text-sm text-neutral-700 transition hover:text-oranje-600"
               >
                 {item.label}
-              </Link>
+              </a>
             ))}
           </nav>
 
-          <a
-            href="#quote"
+          <button
+            type="button"
+            onClick={openQuote}
             className="group hidden items-center gap-2 rounded-full bg-oranje-500 px-5 py-2.5 text-sm font-medium text-white transition-colors duration-200 hover:bg-oranje-600 md:inline-flex"
           >
             Get Free Quote
             <AnimatedArrow className="h-5 w-5" />
-          </a>
+          </button>
 
           <button
             type="button"
@@ -79,14 +96,17 @@ export function Header() {
             <div className="mx-auto max-w-7xl px-5 pb-5">
               <nav className="flex flex-col gap-4">
                 {site.nav.map((item) => (
-                  <Link
+                  <a
                     key={item.href}
                     href={item.href}
-                    onClick={() => setOpen(false)}
+                    onClick={(e) => {
+                      scrollToHash(e, item.href);
+                      setOpen(false);
+                    }}
                     className="text-base text-neutral-800"
                   >
                     {item.label}
-                  </Link>
+                  </a>
                 ))}
                 <a
                   href={site.phoneHref}
@@ -95,14 +115,17 @@ export function Header() {
                   <Phone weight="bold" className="h-5 w-5" />
                   {site.phone}
                 </a>
-                <a
-                  href="#quote"
-                  onClick={() => setOpen(false)}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setOpen(false);
+                    openQuote();
+                  }}
                   className="inline-flex w-fit items-center gap-2 rounded-full bg-oranje-500 px-5 py-2.5 text-sm font-medium text-white transition-colors duration-200 hover:bg-oranje-600"
                 >
                   Get Free Quote
                   <ArrowUpRight className="h-5 w-5" />
-                </a>
+                </button>
               </nav>
             </div>
           </div>

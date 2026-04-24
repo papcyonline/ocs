@@ -1,69 +1,86 @@
-import { Phone, Envelope, Clock, MapPin } from "@phosphor-icons/react/dist/ssr";
+import { Envelope, Clock, MapPin } from "@phosphor-icons/react/dist/ssr";
 import { site } from "@/lib/site";
-import { ContactForm } from "@/components/ContactForm";
+import { QuoteButton } from "@/components/QuoteButton";
+import { AnimatedArrow } from "@/components/icons";
+
+const infoItems = [
+  { icon: Envelope, label: "info@ottri.net", href: "mailto:info@ottri.net" },
+  {
+    icon: Envelope,
+    label: "george@ottriorganics.com",
+    href: "mailto:george@ottriorganics.com",
+  },
+  { icon: Clock, label: site.hours },
+  { icon: MapPin, label: site.city },
+];
 
 export function Contact() {
   return (
-    <section id="contact" className="relative z-[70] bg-oranje-500 md:sticky md:top-0 md:min-h-[150svh]">
-      <div className="mx-auto max-w-7xl px-5 py-16 sm:px-6 md:py-20">
-        <div className="grid gap-10 md:grid-cols-12 md:gap-12">
-          <div className="md:col-span-5">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.25em] text-white/70 sm:text-xs">
-              Contact
-            </p>
-            <h2 className="mt-4 font-display text-4xl tracking-tight text-white sm:mt-5 sm:text-5xl md:text-5xl">
-              Let&rsquo;s get a clean on the books.
-            </h2>
-            <p className="mt-4 max-w-md text-base text-white/85">
-              Tell us about your space — we reply within 2 business days.
-            </p>
+    <section
+      id="contact"
+      className="relative z-[70] bg-neutral-900 md:sticky md:top-0 md:min-h-[150svh]"
+    >
+      <div className="mx-auto flex w-full max-w-7xl flex-col px-5 py-20 sm:px-6 md:min-h-svh md:justify-center md:py-24">
+        <div className="mx-auto max-w-5xl text-center">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.25em] text-oranje-400 sm:text-xs">
+            Contact
+          </p>
 
-            <div className="mt-8 space-y-4">
-              <a
-                href={site.phoneHref}
-                className="flex items-start gap-4 text-white transition-opacity hover:opacity-80"
-              >
-                <Phone
-                  weight="bold"
-                  className="mt-0.5 h-5 w-5 shrink-0"
-                />
-                <span className="font-display text-2xl md:text-3xl">
-                  {site.phone}
-                </span>
-              </a>
+          <p className="mt-8 text-base text-white/60 md:mt-10 md:text-lg">
+            Call us directly.
+          </p>
 
-              <div className="flex items-start gap-4 text-white">
-                <Envelope
-                  weight="bold"
-                  className="mt-0.5 h-5 w-5 shrink-0"
-                />
-                <div className="flex flex-col gap-1">
-                  {site.emails.map((email) => (
-                    <a
-                      key={email}
-                      href={`mailto:${email}`}
-                      className="text-base transition-opacity hover:opacity-80"
-                    >
-                      {email}
-                    </a>
-                  ))}
-                </div>
-              </div>
+          <a
+            href={site.phoneHref}
+            className="mt-3 block font-display-expanded text-5xl font-bold leading-none tracking-tight text-white transition-colors duration-300 hover:text-oranje-400 sm:text-6xl md:mt-4 md:text-7xl lg:text-8xl"
+          >
+            502-390-7925
+          </a>
 
-              <div className="flex items-start gap-4 text-white">
-                <Clock weight="bold" className="mt-0.5 h-5 w-5 shrink-0" />
-                <span className="text-base">{site.hours}</span>
-              </div>
-
-              <div className="flex items-start gap-4 text-white">
-                <MapPin weight="bold" className="mt-0.5 h-5 w-5 shrink-0" />
-                <span className="text-base">{site.city}</span>
-              </div>
+          <div className="mt-10 flex flex-col items-center gap-4 md:mt-14">
+            <div className="flex items-center gap-3 text-sm text-white/50">
+              <span className="h-px w-8 bg-white/20" />
+              <span className="uppercase tracking-[0.2em]">Or</span>
+              <span className="h-px w-8 bg-white/20" />
             </div>
-          </div>
 
-          <div className="md:col-span-7">
-            <ContactForm />
+            <QuoteButton className="group inline-flex items-center gap-2 rounded-full bg-oranje-500 px-6 py-3 text-sm font-medium text-white transition-colors duration-200 hover:bg-oranje-600">
+              Start your quote online
+              <AnimatedArrow className="h-5 w-5" />
+            </QuoteButton>
+          </div>
+        </div>
+
+        <div className="mx-auto mt-16 w-full max-w-4xl md:mt-24">
+          <div className="h-px w-full bg-white/10" />
+
+          <div className="mt-6 flex flex-col items-center gap-4 text-sm md:flex-row md:flex-wrap md:justify-center md:gap-x-8 md:gap-y-3">
+            {infoItems.map((item, i) => {
+              const Icon = item.icon;
+              const content = (
+                <span className="flex items-center gap-2 text-white/70">
+                  <Icon
+                    weight="bold"
+                    className="h-4 w-4 shrink-0 text-oranje-400"
+                  />
+                  {item.label}
+                </span>
+              );
+              return (
+                <div key={i}>
+                  {item.href ? (
+                    <a
+                      href={item.href}
+                      className="transition-colors hover:text-white"
+                    >
+                      {content}
+                    </a>
+                  ) : (
+                    content
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
+import { QuoteModalProvider } from "@/components/QuoteModalContext";
+import { QuoteModal } from "@/components/QuoteModal";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -47,7 +49,10 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${mosvita.variable} ${mosvitaExpanded.variable} font-sans bg-white text-neutral-900 antialiased`}
       >
-        {children}
+        <QuoteModalProvider>
+          {children}
+          <QuoteModal />
+        </QuoteModalProvider>
       </body>
     </html>
   );

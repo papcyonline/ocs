@@ -13,27 +13,27 @@ const footerNav = [
   {
     title: "Services",
     links: [
-      { label: "Residential", href: "#residential" },
-      { label: "Commercial", href: "#commercial" },
-      { label: "Post-Construction", href: "#post-construction" },
-      { label: "Pricing", href: "#pricing" },
+      { label: "Residential", href: "/#services" },
+      { label: "Commercial", href: "/#services" },
+      { label: "Post-Construction", href: "/#services" },
+      { label: "Pricing", href: "/#pricing" },
     ],
   },
   {
     title: "Company",
     links: [
-      { label: "How it works", href: "#how-it-works" },
-      { label: "About", href: "#about" },
-      { label: "Testimonials", href: "#testimonials" },
-      { label: "Careers", href: "#contact" },
+      { label: "How it works", href: "/#how-it-works" },
+      { label: "About", href: "/#about" },
+      { label: "Testimonials", href: "/#testimonials" },
+      { label: "FAQ", href: "/faq" },
     ],
   },
   {
     title: "Legal",
     links: [
-      { label: "Privacy", href: "#" },
-      { label: "Terms", href: "#" },
-      { label: "Cookies", href: "#" },
+      { label: "Privacy", href: "/privacy" },
+      { label: "Terms", href: "/terms" },
+      { label: "Cookies", href: "/cookies" },
     ],
   },
 ];

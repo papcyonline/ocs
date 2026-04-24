@@ -5,6 +5,7 @@ import {
   ThumbsUp,
 } from "@phosphor-icons/react/dist/ssr";
 import { AnimatedArrow } from "@/components/icons";
+import { QuoteButton } from "@/components/QuoteButton";
 
 const steps = [
   {
@@ -91,13 +92,10 @@ export function HowItWorks() {
           <p className="font-display text-2xl text-white md:text-3xl">
             Ready when you are.
           </p>
-          <a
-            href="#quote"
-            className="group inline-flex items-center justify-center gap-2 rounded-full bg-oranje-500 px-7 py-3.5 text-base font-medium text-white transition-colors duration-200 hover:bg-oranje-600"
-          >
+          <QuoteButton className="group inline-flex items-center justify-center gap-2 rounded-full bg-oranje-500 px-7 py-3.5 text-base font-medium text-white transition-colors duration-200 hover:bg-oranje-600">
             Get Free Quote
             <AnimatedArrow className="h-6 w-6" />
-          </a>
+          </QuoteButton>
         </div>
       </div>
     </section>
