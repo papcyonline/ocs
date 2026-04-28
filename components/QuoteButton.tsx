@@ -1,7 +1,5 @@
-"use client";
-
 import type { ReactNode } from "react";
-import { useQuoteModal } from "./QuoteModalContext";
+import Link from "next/link";
 
 type Props = {
   children: ReactNode;
@@ -9,10 +7,9 @@ type Props = {
 };
 
 export function QuoteButton({ children, className }: Props) {
-  const { open } = useQuoteModal();
   return (
-    <button type="button" onClick={open} className={className}>
+    <Link href="/quote" className={className}>
       {children}
-    </button>
+    </Link>
   );
 }

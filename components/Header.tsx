@@ -5,7 +5,7 @@ import Link from "next/link";
 import { List, X, Phone } from "@phosphor-icons/react";
 import { site } from "@/lib/site";
 import { AnimatedArrow, ArrowUpRight } from "@/components/icons";
-import { useQuoteModal } from "@/components/QuoteModalContext";
+import { Logo } from "@/components/Logo";
 
 const HEADER_OFFSET = 96; // px — clears the floating header
 
@@ -23,7 +23,6 @@ function scrollToHash(e: React.MouseEvent<HTMLAnchorElement>, hash: string) {
 export function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const { open: openQuote } = useQuoteModal();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -46,13 +45,8 @@ export function Header() {
         }`}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-3 md:px-6 md:py-4">
-          <Link href="/" className="flex items-baseline gap-2">
-            <span className="font-display text-xl tracking-tight text-black">
-              OCS
-            </span>
-            <span className="hidden text-sm text-neutral-500 sm:inline">
-              Ottri Cleaning Services
-            </span>
+          <Link href="/" aria-label="Ottri Cleaning Services — home">
+            <Logo showSubtitle />
           </Link>
 
           <nav className="hidden items-center gap-8 md:flex">
@@ -68,14 +62,13 @@ export function Header() {
             ))}
           </nav>
 
-          <button
-            type="button"
-            onClick={openQuote}
+          <Link
+            href="/quote"
             className="group hidden items-center gap-2 rounded-full bg-oranje-500 px-5 py-2.5 text-sm font-medium text-white transition-colors duration-200 hover:bg-oranje-600 md:inline-flex"
           >
             Get Free Quote
             <AnimatedArrow className="h-5 w-5" />
-          </button>
+          </Link>
 
           <button
             type="button"
@@ -115,17 +108,14 @@ export function Header() {
                   <Phone weight="bold" className="h-5 w-5" />
                   {site.phone}
                 </a>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setOpen(false);
-                    openQuote();
-                  }}
+                <Link
+                  href="/quote"
+                  onClick={() => setOpen(false)}
                   className="inline-flex w-fit items-center gap-2 rounded-full bg-oranje-500 px-5 py-2.5 text-sm font-medium text-white transition-colors duration-200 hover:bg-oranje-600"
                 >
                   Get Free Quote
                   <ArrowUpRight className="h-5 w-5" />
-                </button>
+                </Link>
               </nav>
             </div>
           </div>

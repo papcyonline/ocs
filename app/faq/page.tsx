@@ -96,7 +96,7 @@ export default function FaqPage() {
                 <p>
                   Kitchen, bathrooms, and all common areas. Add-ons like inside
                   oven, fridge, basement, or windows are available a la carte.
-                  See <a href="/#pricing">pricing</a> for current rates.
+                  Current rates are shown inside our quote request flow.
                 </p>
 
                 <h3>Do you offer discounts for recurring service?</h3>

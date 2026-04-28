@@ -2,6 +2,7 @@
 
 import { Resend } from "resend";
 import { site } from "@/lib/site";
+import { tryReserveSlot } from "@/lib/bookings";
 
 export type ContactResult =
   | { success: true; preview?: boolean }
@@ -11,11 +12,13 @@ type QuoteFields = {
   name: string;
   email: string;
   phone: string;
-  zip: string;
+  address: string;
   service: string;
   size: string;
   timing: string;
   frequency: string;
+  date: string;
+  time: string;
   message: string;
 };
 
@@ -25,27 +28,60 @@ function parse(formData: FormData): QuoteFields {
     name: get("name"),
     email: get("email"),
     phone: get("phone"),
-    zip: get("zip"),
+    address: get("address"),
     service: get("service"),
     size: get("size"),
     timing: get("timing"),
     frequency: get("frequency"),
+    date: get("date"),
+    time: get("time"),
     message: get("message"),
   };
+}
+
+function formatDate(iso: string): string {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(iso)) return iso || "—";
+  const [y, m, d] = iso.split("-").map(Number);
+  const dt = new Date(y, m - 1, d);
+  return dt.toLocaleDateString("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
+function formatTimeRange(time: string): string {
+  if (!/^\d{2}:\d{2}$/.test(time)) return "—";
+  const [h, m] = time.split(":").map(Number);
+  const startMin = h * 60 + m;
+  const endMin = startMin + 4 * 60;
+  const fmt = (mins: number) => {
+    const hh = Math.floor(mins / 60) % 24;
+    const mm = mins % 60;
+    const period = hh >= 12 ? "PM" : "AM";
+    const display = hh % 12 === 0 ? 12 : hh % 12;
+    return mm === 0
+      ? `${display} ${period}`
+      : `${display}:${mm.toString().padStart(2, "0")} ${period}`;
+  };
+  return `${fmt(startMin)} – ${fmt(endMin)}`;
 }
 
 function ocsPlain(q: QuoteFields) {
   return `New quote request from the OCS website.
 
 CONTACT
-  Name:  ${q.name}
-  Email: ${q.email}
-  Phone: ${q.phone}
-  ZIP:   ${q.zip || "—"}
+  Name:    ${q.name}
+  Email:   ${q.email}
+  Phone:   ${q.phone}
+  Address: ${q.address || "—"}
 
 SERVICE
   Type:      ${q.service || "—"}
   Size:      ${q.size || "—"}
+  Date:      ${formatDate(q.date)}
+  Time:      ${formatTimeRange(q.time)}
   Timing:    ${q.timing || "—"}
   Frequency: ${q.frequency || "—"}
 
@@ -64,12 +100,14 @@ function ocsHtml(q: QuoteFields) {
       ${row("Name", q.name)}
       ${row("Email", q.email)}
       ${row("Phone", q.phone)}
-      ${row("ZIP", q.zip)}
+      ${row("Address", q.address)}
     </table>
     <h3 style="margin:0 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:#e55c00;">Service</h3>
     <table style="border-collapse:collapse;margin-bottom:20px;">
       ${row("Type", q.service)}
       ${row("Size", q.size)}
+      ${row("Date", formatDate(q.date))}
+      ${row("Time", formatTimeRange(q.time))}
       ${row("Timing", q.timing)}
       ${row("Frequency", q.frequency)}
     </table>
@@ -85,8 +123,11 @@ Thanks for reaching out to Ottri Cleaning Services. We've received your quote re
 Your request
   Service:   ${q.service || "—"}
   Size:      ${q.size || "—"}
+  Date:      ${formatDate(q.date)}
+  Time:      ${formatTimeRange(q.time)}
   Timing:    ${q.timing || "—"}
   Frequency: ${q.frequency || "—"}
+  Address:   ${q.address || "—"}
 
 For anything urgent, call 502-390-7925.
 
@@ -106,8 +147,11 @@ function userHtml(q: QuoteFields) {
     <table style="border-collapse:collapse;margin-bottom:20px;">
       ${row("Service", q.service)}
       ${row("Size", q.size)}
+      ${row("Date", formatDate(q.date))}
+      ${row("Time", formatTimeRange(q.time))}
       ${row("Timing", q.timing)}
       ${row("Frequency", q.frequency)}
+      ${row("Address", q.address)}
     </table>
     <p style="margin:20px 0 0;font-size:14px;color:#404040;">For anything urgent, call <a href="tel:+15023907925" style="color:#e55c00;">502-390-7925</a>.</p>
     <p style="margin:24px 0 0;font-size:13px;color:#737373;">Ottri Cleaning Services · Louisville, KY</p>
@@ -124,6 +168,22 @@ export async function sendQuoteRequest(
     return {
       success: false,
       error: "Please fill in name, email, and phone.",
+    };
+  }
+
+  if (!q.address) {
+    return { success: false, error: "Please enter your service address." };
+  }
+
+  if (!q.date || !q.time) {
+    return { success: false, error: "Please pick a date and time." };
+  }
+
+  const reserved = await tryReserveSlot(q.date, q.time);
+  if (!reserved) {
+    return {
+      success: false,
+      error: "That time just got booked. Please pick another.",
     };
   }
 

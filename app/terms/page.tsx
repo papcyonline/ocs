@@ -43,11 +43,10 @@ export default function TermsPage() {
 
               <LegalSection number="02" title="Quotes and pricing">
                 <p>
-                  Residential cleaning starts at the prices listed on our{" "}
-                  <a href="/#pricing">Pricing</a> section. Final pricing depends
-                  on home size, condition, and selected add-ons. Commercial and
-                  post-construction work is quoted on-site after a free
-                  walkthrough.
+                  Residential pricing is shown inside our quote request flow.
+                  Final pricing depends on home size, condition, and selected
+                  add-ons. Commercial and post-construction work is quoted
+                  on-site after a free walkthrough.
                 </p>
               </LegalSection>
 

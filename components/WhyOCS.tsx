@@ -83,18 +83,6 @@ export function WhyOCS() {
           })}
         </div>
 
-        <div className="h-px w-full bg-neutral-200" />
-
-        <div className="mt-6 flex flex-col gap-2 text-sm text-neutral-600 sm:flex-row sm:items-center sm:justify-between">
-          <p>
-            Locally owned and operated by{" "}
-            <span className="font-medium text-neutral-900">George Ngi</span> ·
-            Louisville, KY
-          </p>
-          <p className="font-mono text-xs uppercase tracking-wider text-neutral-500">
-            UEI JBE5GCLMAP74 · NAICS 561720 / 561790
-          </p>
-        </div>
       </div>
     </section>
   );

@@ -8,6 +8,7 @@ import {
   Envelope,
 } from "@phosphor-icons/react/dist/ssr";
 import { site } from "@/lib/site";
+import { Logo } from "@/components/Logo";
 
 const footerNav = [
   {
@@ -16,7 +17,6 @@ const footerNav = [
       { label: "Residential", href: "/#services" },
       { label: "Commercial", href: "/#services" },
       { label: "Post-Construction", href: "/#services" },
-      { label: "Pricing", href: "/#pricing" },
     ],
   },
   {
@@ -51,11 +51,8 @@ export function Footer() {
       <div className="mx-auto max-w-7xl px-5 py-16 sm:px-6 md:py-20">
         <div className="grid gap-12 md:grid-cols-12 md:gap-10">
           <div className="md:col-span-5">
-            <Link href="/" className="flex items-baseline gap-2">
-              <span className="font-display text-2xl tracking-tight text-white">
-                OCS
-              </span>
-              <span className="text-sm text-white/60">{site.name}</span>
+            <Link href="/" aria-label={`${site.name} — home`}>
+              <Logo tone="light" showSubtitle />
             </Link>
 
             <p className="mt-5 max-w-sm text-base text-white/70">
