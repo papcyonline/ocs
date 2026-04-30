@@ -15,7 +15,7 @@ export function Sponsors() {
   return (
     <section
       id="sponsors"
-      className="relative z-[60] bg-white md:sticky md:top-0 md:min-h-[150svh]"
+      className="relative z-[60] bg-white md:sticky md:top-24 md:min-h-[150svh]"
     >
       <div className="mx-auto max-w-7xl px-5 py-14 sm:px-6 md:py-16">
         <div className="max-w-3xl">
