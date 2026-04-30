@@ -18,7 +18,7 @@ export function Contact() {
   return (
     <section
       id="contact"
-      className="relative z-[70] bg-neutral-900 md:sticky md:top-24 md:min-h-[150svh]"
+      className="relative z-[70] bg-neutral-900 md:sticky md:top-0 md:min-h-[150svh]"
     >
       <div className="mx-auto flex w-full max-w-7xl flex-col px-5 py-20 sm:px-6 md:min-h-svh md:justify-center md:py-24">
         <div className="mx-auto max-w-5xl text-center">

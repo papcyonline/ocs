@@ -56,7 +56,7 @@ export function Testimonials() {
   return (
     <section
       id="testimonials"
-      className="relative z-50 bg-neutral-100 md:sticky md:top-24 md:min-h-[150svh]"
+      className="relative z-50 bg-neutral-100 md:sticky md:top-0 md:min-h-[150svh]"
     >
       <div className="mx-auto max-w-7xl px-5 pt-16 sm:px-6 md:pt-20">
         <div className="max-w-3xl">
