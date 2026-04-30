@@ -218,7 +218,7 @@ export async function sendQuoteRequest(
 
   try {
     const resend = new Resend(apiKey);
-    const from = "OCS <onboarding@resend.dev>";
+    const from = "OCS <quotes@ottri.net>";
     const subject = `New quote request — ${q.name}${q.service ? ` (${q.service})` : ""}`;
 
     const [toOcs, toUser] = await Promise.allSettled([
