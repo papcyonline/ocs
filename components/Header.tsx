@@ -11,12 +11,20 @@ const HEADER_OFFSET = 96; // px — clears the floating header
 
 function scrollToHash(e: React.MouseEvent<HTMLAnchorElement>, hash: string) {
   if (!hash.startsWith("#")) return;
-  const el = document.querySelector(hash);
+  const el = document.querySelector<HTMLElement>(hash);
   if (!el) return;
   e.preventDefault();
-  const top =
-    el.getBoundingClientRect().top + window.scrollY - HEADER_OFFSET;
-  window.scrollTo({ top, behavior: "smooth" });
+  let top = 0;
+  let node: HTMLElement | null = el;
+  while (node) {
+    top += node.offsetTop;
+    node = node.offsetParent as HTMLElement | null;
+  }
+  window.scrollTo({
+    top: Math.max(0, top - HEADER_OFFSET),
+    left: 0,
+    behavior: "instant",
+  });
   history.pushState(null, "", hash);
 }
 

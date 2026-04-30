@@ -38,7 +38,7 @@ function StarRow() {
 
 export function Hero() {
   return (
-    <section className="relative z-10 isolate min-h-svh overflow-hidden md:sticky md:top-0 md:min-h-[150svh]">
+    <section className="relative isolate min-h-svh overflow-hidden">
       {heroSlides.map((slide, i) => (
         <Image
           key={slide.alt}
