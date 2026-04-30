@@ -46,6 +46,12 @@ body {
   color: #0a0a0a;
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 section[id] {
   scroll-margin-top: 6rem;
 }
