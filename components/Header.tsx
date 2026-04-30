@@ -7,16 +7,20 @@ import { site } from "@/lib/site";
 import { AnimatedArrow, ArrowUpRight } from "@/components/icons";
 import { Logo } from "@/components/Logo";
 
-const HEADER_OFFSET = 96; // px — clears the floating header
+const HEADER_OFFSET = 96;
 
-function scrollToHash(e: React.MouseEvent<HTMLAnchorElement>, hash: string) {
+function jumpToHash(e: React.MouseEvent<HTMLAnchorElement>, hash: string) {
   if (!hash.startsWith("#")) return;
-  const el = document.querySelector(hash);
+  const el = document.querySelector<HTMLElement>(hash);
   if (!el) return;
   e.preventDefault();
-  const top =
-    el.getBoundingClientRect().top + window.scrollY - HEADER_OFFSET;
-  window.scrollTo({ top, behavior: "smooth" });
+  let top = 0;
+  let node: HTMLElement | null = el;
+  while (node) {
+    top += node.offsetTop;
+    node = node.offsetParent as HTMLElement | null;
+  }
+  window.scrollTo({ top: Math.max(0, top - HEADER_OFFSET), behavior: "auto" });
   history.pushState(null, "", hash);
 }
 
@@ -54,7 +58,7 @@ export function Header() {
               <a
                 key={item.href}
                 href={item.href}
-                onClick={(e) => scrollToHash(e, item.href)}
+                onClick={(e) => jumpToHash(e, item.href)}
                 className="text-sm text-neutral-700 transition hover:text-oranje-600"
               >
                 {item.label}
@@ -93,7 +97,7 @@ export function Header() {
                     key={item.href}
                     href={item.href}
                     onClick={(e) => {
-                      scrollToHash(e, item.href);
+                      jumpToHash(e, item.href);
                       setOpen(false);
                     }}
                     className="text-base text-neutral-800"
