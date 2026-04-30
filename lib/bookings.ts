@@ -23,8 +23,19 @@ async function read(): Promise<Slots> {
 }
 
 async function write(slots: Slots) {
-  await fs.mkdir(path.dirname(FILE), { recursive: true });
-  await fs.writeFile(FILE, JSON.stringify(slots, null, 2));
+  try {
+    await fs.mkdir(path.dirname(FILE), { recursive: true });
+    await fs.writeFile(FILE, JSON.stringify(slots, null, 2));
+  } catch (e) {
+    const code = (e as NodeJS.ErrnoException).code;
+    if (code === "EROFS" || code === "EACCES" || code === "EPERM") {
+      console.warn(
+        `[bookings] read-only filesystem (${code}); skipping persistence`,
+      );
+      return;
+    }
+    throw e;
+  }
 }
 
 function toMinutes(time: string): number | null {

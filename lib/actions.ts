@@ -197,12 +197,16 @@ export async function sendQuoteRequest(
     return { success: false, error: "Please pick a date and time." };
   }
 
-  const reserved = await tryReserveSlot(q.date, q.time);
-  if (!reserved) {
-    return {
-      success: false,
-      error: "That time just got booked. Please pick another.",
-    };
+  try {
+    const reserved = await tryReserveSlot(q.date, q.time);
+    if (!reserved) {
+      return {
+        success: false,
+        error: "That time just got booked. Please pick another.",
+      };
+    }
+  } catch (e) {
+    console.error("[bookings] reservation failed, continuing:", e);
   }
 
   const apiKey = process.env.RESEND_API_KEY;
@@ -217,7 +221,7 @@ export async function sendQuoteRequest(
     const from = "OCS <onboarding@resend.dev>";
     const subject = `New quote request — ${q.name}${q.service ? ` (${q.service})` : ""}`;
 
-    const [toOcs, toUser] = await Promise.all([
+    const [toOcs, toUser] = await Promise.allSettled([
       resend.emails.send({
         from,
         to: site.emails,
@@ -236,8 +240,23 @@ export async function sendQuoteRequest(
       }),
     ]);
 
-    if (toOcs.error || toUser.error) {
-      console.error("Resend error:", toOcs.error ?? toUser.error);
+    const ocsOk =
+      toOcs.status === "fulfilled" && !toOcs.value.error;
+    const userOk =
+      toUser.status === "fulfilled" && !toUser.value.error;
+
+    if (!ocsOk) {
+      const reason =
+        toOcs.status === "rejected" ? toOcs.reason : toOcs.value.error;
+      console.error("Resend OCS notification failed:", reason);
+    }
+    if (!userOk) {
+      const reason =
+        toUser.status === "rejected" ? toUser.reason : toUser.value.error;
+      console.error("Resend customer confirmation failed:", reason);
+    }
+
+    if (!ocsOk) {
       return {
         success: false,
         error: "Could not send. Please call 502-390-7925 instead.",
