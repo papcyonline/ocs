@@ -17,6 +17,9 @@ type QuoteFields = {
   size: string;
   timing: string;
   frequency: string;
+  pets: string;
+  entry: string;
+  extras: string;
   date: string;
   time: string;
   message: string;
@@ -33,6 +36,9 @@ function parse(formData: FormData): QuoteFields {
     size: get("size"),
     timing: get("timing"),
     frequency: get("frequency"),
+    pets: get("pets"),
+    entry: get("entry"),
+    extras: get("extras"),
     date: get("date"),
     time: get("time"),
     message: get("message"),
@@ -84,6 +90,9 @@ SERVICE
   Time:      ${formatTimeRange(q.time)}
   Timing:    ${q.timing || "—"}
   Frequency: ${q.frequency || "—"}
+  Pets:      ${q.pets || "—"}
+  Entry:     ${q.entry || "—"}
+  Extras:    ${q.extras || "—"}
 
 MESSAGE
 ${q.message || "—"}
@@ -110,6 +119,9 @@ function ocsHtml(q: QuoteFields) {
       ${row("Time", formatTimeRange(q.time))}
       ${row("Timing", q.timing)}
       ${row("Frequency", q.frequency)}
+      ${row("Pets", q.pets)}
+      ${row("Entry", q.entry)}
+      ${row("Extras", q.extras)}
     </table>
     ${q.message ? `<h3 style="margin:0 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:#e55c00;">Message</h3><p style="white-space:pre-wrap;margin:0;font-size:14px;line-height:1.6;">${q.message}</p>` : ""}
   </div>`;
@@ -127,6 +139,9 @@ Your request
   Time:      ${formatTimeRange(q.time)}
   Timing:    ${q.timing || "—"}
   Frequency: ${q.frequency || "—"}
+  Pets:      ${q.pets || "—"}
+  Entry:     ${q.entry || "—"}
+  Extras:    ${q.extras || "—"}
   Address:   ${q.address || "—"}
 
 For anything urgent, call 502-390-7925.
@@ -151,6 +166,9 @@ function userHtml(q: QuoteFields) {
       ${row("Time", formatTimeRange(q.time))}
       ${row("Timing", q.timing)}
       ${row("Frequency", q.frequency)}
+      ${row("Pets", q.pets)}
+      ${row("Entry", q.entry)}
+      ${row("Extras", q.extras)}
       ${row("Address", q.address)}
     </table>
     <p style="margin:20px 0 0;font-size:14px;color:#404040;">For anything urgent, call <a href="tel:+15023907925" style="color:#e55c00;">502-390-7925</a>.</p>

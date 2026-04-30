@@ -44,7 +44,7 @@ export function Header() {
             : "rounded-[30px] shadow-lg shadow-black/10"
         }`}
       >
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-3 md:px-6 md:py-4">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-1.5 md:px-6 md:py-2">
           <Link href="/" aria-label="Ottri Cleaning Services — home">
             <Logo showSubtitle />
           </Link>

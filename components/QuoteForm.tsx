@@ -4,7 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import {
   House,
   Buildings,
-  HardHat,
+  Tree,
+  Sparkle,
   Check,
   CheckCircle,
   MapPin,
@@ -21,9 +22,26 @@ import { sendQuoteRequest, type ContactResult } from "@/lib/actions";
 import { getBookedSlots } from "@/lib/bookings";
 
 const SERVICES = [
-  { id: "Residential", icon: House, blurb: "Homes & apartments" },
-  { id: "Commercial", icon: Buildings, blurb: "Offices & shared spaces" },
-  { id: "Post-Construction", icon: HardHat, blurb: "New builds & renovations" },
+  {
+    id: "Commercial Cleaning",
+    icon: Buildings,
+    blurb: "Offices, retail & shared spaces",
+  },
+  {
+    id: "Residential Cleaning",
+    icon: House,
+    blurb: "Homes & apartments",
+  },
+  {
+    id: "Outdoor Cleaning",
+    icon: Tree,
+    blurb: "Pressure wash, decks & driveways",
+  },
+  {
+    id: "Specialized Services",
+    icon: Sparkle,
+    blurb: "Post-construction, deep & move-in/out",
+  },
 ] as const;
 
 const SIZES = [
@@ -42,6 +60,19 @@ const TIMINGS = [
 
 const FREQUENCIES = ["One-time", "Weekly", "Bi-weekly", "Monthly"];
 
+const PETS = ["No pets", "Dog(s)", "Cat(s)", "Both dogs and cats"];
+
+const ENTRY = ["I'll be home", "Key under mat/hidden", "Door code", "Other"];
+
+const EXTRAS = [
+  "Inside oven",
+  "Inside refrigerator",
+  "Interior windows",
+  "Under carpet",
+  "Basement cleaning",
+  "Other",
+];
+
 const SERVICE_STATES = ["Indiana", "Kentucky", "Ohio"] as const;
 
 const STEPS = [
@@ -56,6 +87,9 @@ type FormData = {
   size: string;
   timing: string;
   frequency: string;
+  pets: string;
+  entry: string;
+  extras: string[];
   date: string;
   time: string;
   name: string;
@@ -70,6 +104,9 @@ const EMPTY: FormData = {
   size: "",
   timing: "",
   frequency: "",
+  pets: "",
+  entry: "",
+  extras: [],
   date: "",
   time: "",
   name: "",
@@ -134,7 +171,14 @@ const inputClass =
 
 function isStepComplete(step: number, data: FormData): boolean {
   if (step === 1) return !!data.service;
-  if (step === 2) return !!data.size && !!data.timing && !!data.frequency;
+  if (step === 2)
+    return (
+      !!data.size &&
+      !!data.timing &&
+      !!data.frequency &&
+      !!data.pets &&
+      !!data.entry
+    );
   if (step === 3) return !!data.date && !!data.time;
   if (step === 4)
     return !!data.name && !!data.email && !!data.phone && !!data.address;
@@ -165,7 +209,8 @@ export function QuoteForm() {
     setSubmitting(true);
     const fd = new FormData();
     (Object.keys(data) as Array<keyof FormData>).forEach((k) => {
-      fd.append(k, data[k]);
+      const v = data[k];
+      fd.append(k, Array.isArray(v) ? v.join(", ") : v);
     });
     const res = await sendQuoteRequest(null, fd);
     setResult(res);
@@ -455,13 +500,13 @@ function Step1({
   return (
     <div>
       <h2 className="font-display text-lg tracking-tight text-black sm:text-xl">
-        What do you need?
+        Choose your service.
       </h2>
       <p className="mt-1 text-sm text-neutral-600">
-        Pick the service that best matches your space.
+        Pick the option that best matches your space.
       </p>
 
-      <div className="mt-4 grid gap-2 sm:grid-cols-3 sm:gap-3">
+      <div className="mt-4 grid gap-2 sm:grid-cols-2 sm:gap-3 lg:grid-cols-4">
         {SERVICES.map((s) => {
           const Icon = s.icon;
           const selected = service === s.id;
@@ -545,6 +590,77 @@ function Step2({
           onPick={(v) => update("frequency", v)}
         />
       </Field>
+
+      <Field label="Do you have pets?">
+        <OptionGrid
+          options={PETS}
+          value={data.pets}
+          onPick={(v) => update("pets", v)}
+        />
+      </Field>
+
+      <Field label="How should we enter?">
+        <OptionGrid
+          options={ENTRY}
+          value={data.entry}
+          onPick={(v) => update("entry", v)}
+        />
+      </Field>
+
+      <Field label="Add extra services (optional)">
+        <ExtrasGrid
+          options={EXTRAS}
+          values={data.extras}
+          onToggle={(v) => {
+            const next = data.extras.includes(v)
+              ? data.extras.filter((e) => e !== v)
+              : [...data.extras, v];
+            update("extras", next);
+          }}
+        />
+      </Field>
+    </div>
+  );
+}
+
+function ExtrasGrid({
+  options,
+  values,
+  onToggle,
+}: {
+  options: readonly string[];
+  values: string[];
+  onToggle: (v: string) => void;
+}) {
+  return (
+    <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+      {options.map((opt) => {
+        const selected = values.includes(opt);
+        return (
+          <button
+            key={opt}
+            type="button"
+            onClick={() => onToggle(opt)}
+            className={`flex items-center justify-between gap-2 rounded-2xl px-4 py-3 text-left text-sm transition ${
+              selected
+                ? "bg-oranje-50 font-medium text-oranje-700 ring-2 ring-oranje-500"
+                : "bg-neutral-100 text-neutral-800 hover:bg-neutral-200"
+            }`}
+            aria-pressed={selected}
+          >
+            <span>{opt}</span>
+            <span
+              className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-md transition ${
+                selected
+                  ? "bg-oranje-500 text-white"
+                  : "bg-white ring-1 ring-neutral-300"
+              }`}
+            >
+              {selected && <Check weight="bold" className="h-3.5 w-3.5" />}
+            </span>
+          </button>
+        );
+      })}
     </div>
   );
 }
