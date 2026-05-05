@@ -1,5 +1,5 @@
 import Image from "next/image";
-import logo from "@/Images/ocs-logo.jpg";
+import logo from "@/Images/ocs-logo.png";
 
 type LogoProps = {
   className?: string;
