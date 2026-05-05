@@ -54,7 +54,7 @@ export function Header() {
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-1.5 md:px-6 md:py-2">
           <Link href="/" aria-label="Ottri Cleaning Services — home">
-            <Logo showSubtitle />
+            <Logo />
           </Link>
 
           <nav className="hidden items-center gap-8 md:flex">

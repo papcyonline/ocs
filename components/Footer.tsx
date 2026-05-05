@@ -52,7 +52,7 @@ export function Footer() {
         <div className="grid gap-12 md:grid-cols-12 md:gap-10">
           <div className="md:col-span-5">
             <Link href="/" aria-label={`${site.name} — home`}>
-              <Logo tone="light" showSubtitle />
+              <Logo />
             </Link>
 
             <p className="mt-5 max-w-sm text-base text-white/70">
