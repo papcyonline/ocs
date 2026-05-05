@@ -1,8 +1,67 @@
 "use server";
 
 import { Resend } from "resend";
+import twilio from "twilio";
 import { site } from "@/lib/site";
 import { tryReserveSlot } from "@/lib/bookings";
+
+const OWNER_NOTIFY_PHONE = "+15023907925";
+
+function toE164(phone: string): string | null {
+  const digits = phone.replace(/\D/g, "");
+  if (phone.trim().startsWith("+") && digits.length >= 8) return `+${digits}`;
+  if (digits.length === 10) return `+1${digits}`;
+  if (digits.length === 11 && digits.startsWith("1")) return `+${digits}`;
+  return null;
+}
+
+async function sendBookingTexts(q: QuoteFields) {
+  const sid = process.env.TWILIO_ACCOUNT_SID;
+  const token = process.env.TWILIO_AUTH_TOKEN;
+  const from = process.env.TWILIO_FROM;
+  if (!sid || !token || !from) {
+    console.log("[Twilio not configured — skipping SMS/WhatsApp]");
+    return;
+  }
+
+  const client = twilio(sid, token);
+  const customerPhone = toE164(q.phone);
+  const firstName = q.name.split(" ")[0] || q.name;
+  const dateStr = formatDate(q.date);
+  const timeStr = formatTimeRange(q.time);
+  const serviceStr = q.service || "cleaning";
+
+  const ownerBody = `New OCS booking: ${q.name} — ${serviceStr} on ${dateStr}, ${timeStr}. Phone: ${q.phone}. Address: ${q.address || "—"}`;
+  const customerBody = `Hi ${firstName}, thanks for booking with Ottri Cleaning Services. We received your request for ${serviceStr} on ${dateStr}, ${timeStr} and will follow up within 2 business days. Call 502-390-7925 if urgent.`;
+
+  const sends: Promise<unknown>[] = [
+    client.messages.create({ from, to: OWNER_NOTIFY_PHONE, body: ownerBody }),
+    client.messages.create({
+      from: `whatsapp:${from}`,
+      to: `whatsapp:${OWNER_NOTIFY_PHONE}`,
+      body: ownerBody,
+    }),
+  ];
+  if (customerPhone) {
+    sends.push(
+      client.messages.create({ from, to: customerPhone, body: customerBody }),
+    );
+    sends.push(
+      client.messages.create({
+        from: `whatsapp:${from}`,
+        to: `whatsapp:${customerPhone}`,
+        body: customerBody,
+      }),
+    );
+  }
+
+  const results = await Promise.allSettled(sends);
+  results.forEach((r, i) => {
+    if (r.status === "rejected") {
+      console.error(`[Twilio send ${i}] failed:`, r.reason);
+    }
+  });
+}
 
 export type ContactResult =
   | { success: true; preview?: boolean }
@@ -213,6 +272,9 @@ export async function sendQuoteRequest(
 
   if (!apiKey) {
     console.log("[Quote form — RESEND_API_KEY not set]\n" + ocsPlain(q));
+    await sendBookingTexts(q).catch((e) =>
+      console.error("Twilio send threw:", e),
+    );
     return { success: true, preview: true };
   }
 
@@ -262,6 +324,11 @@ export async function sendQuoteRequest(
         error: "Could not send. Please call 502-390-7925 instead.",
       };
     }
+
+    await sendBookingTexts(q).catch((e) =>
+      console.error("Twilio send threw:", e),
+    );
+
     return { success: true };
   } catch (e) {
     console.error("Quote action threw:", e);
