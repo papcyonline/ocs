@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import {
   House,
   Buildings,
@@ -8,10 +9,12 @@ import {
 import residentialImg from "@/Images/pexels-tima-miroshnichenko-6196677.jpg";
 import commercialImg from "@/Images/pexels-tima-miroshnichenko-6195277.jpg";
 import postBuildImg from "@/Images/pexels-tima-miroshnichenko-6195276.jpg";
+import { AnimatedArrow } from "@/components/icons";
 
 const services = [
   {
     title: "Residential",
+    href: "/services/residential-cleaning",
     icon: House,
     items: [
       "One-time deep cleans",
@@ -24,6 +27,7 @@ const services = [
   },
   {
     title: "Commercial",
+    href: "/services/commercial-cleaning",
     icon: Buildings,
     items: [
       "Office & janitorial",
@@ -36,6 +40,7 @@ const services = [
   },
   {
     title: "Post-Construction",
+    href: "/services/post-construction-cleaning",
     icon: HardHat,
     items: [
       "New construction cleans",
@@ -114,6 +119,14 @@ export function Services() {
                     </li>
                   ))}
                 </ul>
+
+                <Link
+                  href={service.href}
+                  className="group mt-5 inline-flex items-center gap-2 text-sm font-medium text-oranje-700 transition-colors hover:text-oranje-800"
+                >
+                  Learn more
+                  <AnimatedArrow className="h-5 w-5" />
+                </Link>
               </article>
             );
           })}

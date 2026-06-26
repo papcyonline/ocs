@@ -5,9 +5,10 @@ import { PageHeader } from "@/components/PageHeader";
 import { LegalSection } from "@/components/LegalSection";
 
 export const metadata: Metadata = {
-  title: "Terms of Service | OCS — Ottri Cleaning Services",
+  title: "Terms of Service",
   description:
     "Terms governing services provided by Ottri Cleaning Services LLC in the greater Louisville, KY area.",
+  alternates: { canonical: "/terms" },
 };
 
 export default function TermsPage() {

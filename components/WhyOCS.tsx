@@ -8,7 +8,7 @@ import {
 const stats = [
   { value: "2,450+", label: "Cleans completed" },
   { value: "4.9★", label: "Average rating" },
-  { value: "6", label: "Metros served" },
+  { value: "20+", label: "Neighborhoods served" },
   { value: "24h", label: "Response window" },
 ];
 
