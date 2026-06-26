@@ -40,19 +40,13 @@ export function Header() {
   }, []);
 
   return (
-    <div
-      className={`fixed inset-x-0 top-0 z-[100] transition-all duration-300 ${
-        scrolled ? "px-0 pt-0" : "px-4 pt-4"
-      }`}
-    >
+    <div className="fixed inset-x-0 top-0 z-[100]">
       <header
-        className={`bg-white/80 backdrop-blur-md transition-all duration-300 ${
-          scrolled
-            ? "rounded-b-[30px] shadow-sm shadow-black/5"
-            : "rounded-[30px] shadow-lg shadow-black/10"
+        className={`bg-white/80 backdrop-blur-md transition-shadow duration-300 ${
+          scrolled ? "shadow-sm shadow-black/5" : ""
         }`}
       >
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-1.5 md:px-6 md:py-2">
+        <div className="flex w-full items-center justify-between px-5 py-1.5 md:px-8 md:py-2">
           <Link href="/" aria-label="Ottri Cleaning Services — home">
             <Logo />
           </Link>
@@ -94,7 +88,7 @@ export function Header() {
 
         {open && (
           <div className="md:hidden">
-            <div className="mx-auto max-w-7xl px-5 pb-5">
+            <div className="px-5 pb-5 md:px-8">
               <nav className="flex flex-col gap-4">
                 {site.nav.map((item) => (
                   <a
