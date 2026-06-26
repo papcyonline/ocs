@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { absoluteUrl } from "@/lib/site";
 import { services } from "@/lib/services";
 import { locations } from "@/lib/locations";
+import { getAllPosts } from "@/lib/blog";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const routes: {
@@ -11,6 +12,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }[] = [
     { path: "/", priority: 1, changeFrequency: "weekly" },
     { path: "/quote", priority: 0.9, changeFrequency: "monthly" },
+    { path: "/blog", priority: 0.7, changeFrequency: "weekly" },
+    ...getAllPosts().map((p) => ({
+      path: `/blog/${p.slug}`,
+      priority: 0.6,
+      changeFrequency: "monthly" as const,
+    })),
     ...services.map((s) => ({
       path: `/services/${s.slug}`,
       priority: 0.8,

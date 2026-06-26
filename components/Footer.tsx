@@ -28,7 +28,7 @@ const footerNav = [
     links: [
       { label: "How it works", href: "/#how-it-works" },
       { label: "About", href: "/#about" },
-      { label: "Testimonials", href: "/#testimonials" },
+      { label: "Blog", href: "/blog" },
       { label: "FAQ", href: "/faq" },
     ],
   },

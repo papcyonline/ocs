@@ -224,6 +224,31 @@ export function howToSchema() {
   };
 }
 
+export function articleSchema(post: {
+  slug: string;
+  title: string;
+  description: string;
+  date: string;
+  author: string;
+  image?: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "@id": absoluteUrl(`/blog/${post.slug}#article`),
+    headline: post.title,
+    description: post.description,
+    datePublished: post.date,
+    dateModified: post.date,
+    url: absoluteUrl(`/blog/${post.slug}`),
+    image: post.image ?? absoluteUrl("/opengraph-image"),
+    author: { "@type": "Organization", name: post.author, "@id": ORG_ID },
+    publisher: { "@id": ORG_ID },
+    mainEntityOfPage: absoluteUrl(`/blog/${post.slug}`),
+    isPartOf: { "@id": WEBSITE_ID },
+  };
+}
+
 export function breadcrumbSchema(crumbs: { name: string; path: string }[]) {
   return {
     "@context": "https://schema.org",

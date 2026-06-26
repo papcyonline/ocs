@@ -39,6 +39,7 @@ statically prerendered, no type or lint errors.
   - `/cleaning/highlands` (+ downtown, st-matthews, east-end, south-louisville)
   - `/sitemap.xml`, `/robots.txt`, `/opengraph-image`, `/icon`
   - `/llms.txt`, `/llms-full.txt`, `/manifest.webmanifest`, `/apple-icon`
+  - `/blog` and at least one post (e.g. `/blog/move-out-cleaning-checklist`)
 
 ## 3. Google Search Console (do this first — it's the priority)
 
@@ -125,4 +126,37 @@ These are wired in code and will activate the moment the values are filled in
 - `llms.txt` + `llms-full.txt` for LLM/answer-engine ingestion (generated from
   the same data as the pages, so they never drift)
 - 3 service landing pages + 5 neighborhood landing pages, fully cross-linked
+- Blog with 4 launch posts (`Article` + `FAQPage` schema), in the sitemap and
+  llms.txt
 - Search Console / Bing verification slots (env-driven)
+
+---
+
+## Publishing a blog post
+
+Posts are plain Markdown files in `content/blog/`. To add one:
+
+1. Create `content/blog/your-post-slug.md`. The filename becomes the URL
+   (`/blog/your-post-slug`).
+2. Start the file with frontmatter:
+   ```
+   ---
+   title: "Your Post Title"
+   description: "One- to two-sentence summary for search results and llms.txt."
+   date: "2026-07-01"          # yyyy-mm-dd; controls ordering
+   author: "Ottri Cleaning Services"
+   tags: ["Home cleaning", "Guides"]
+   excerpt: "Short teaser shown on the blog index."
+   faqs:                        # optional — each becomes FAQ rich-result markup
+     - question: "A question?"
+       answer: "A clear, self-contained answer."
+   ---
+   ```
+3. Write the body in Markdown below the frontmatter (headings, lists, tables,
+   links). Link to service/area pages with relative paths, e.g.
+   `[residential cleaning](/services/residential-cleaning)`.
+4. Commit and deploy. The post is automatically added to the blog index,
+   sitemap, and llms.txt — no other files to touch.
+
+> The four launch posts make accurate, on-brand templates. Review any specific
+> claims (prices, timelines) before publishing.

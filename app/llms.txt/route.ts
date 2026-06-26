@@ -1,6 +1,7 @@
 import { site, absoluteUrl } from "@/lib/site";
 import { services } from "@/lib/services";
 import { locations } from "@/lib/locations";
+import { getAllPosts } from "@/lib/blog";
 
 // Serves /llms.txt — a curated, LLM-friendly map of the site (Answer.AI's
 // proposed standard). Generated from the same data as the pages so it never
@@ -35,12 +36,26 @@ export function GET() {
   }
   lines.push("");
 
+  const posts = getAllPosts();
+  if (posts.length) {
+    lines.push("## Guides & Articles");
+    for (const p of posts) {
+      lines.push(
+        `- [${p.title}](${absoluteUrl(`/blog/${p.slug}`)}): ${p.description}`,
+      );
+    }
+    lines.push("");
+  }
+
   lines.push("## Key Pages");
   lines.push(
     `- [Get a Free Quote](${absoluteUrl("/quote")}): Request a free, no-commitment cleaning estimate.`,
   );
   lines.push(
     `- [FAQ](${absoluteUrl("/faq")}): Answers on booking, supplies, pets, pricing, and the satisfaction guarantee.`,
+  );
+  lines.push(
+    `- [Blog](${absoluteUrl("/blog")}): Cleaning guides, checklists, and tips.`,
   );
   lines.push("");
 
