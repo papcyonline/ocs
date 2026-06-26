@@ -3,9 +3,10 @@ import { Header } from "@/components/Header";
 import { QuoteForm } from "@/components/QuoteForm";
 
 export const metadata: Metadata = {
-  title: "Get a free quote — Ottri Cleaning Services",
+  title: "Get a Free Cleaning Quote",
   description:
-    "Tell us about your space — residential, commercial, or post-construction — and book your spot. We service Indiana, Kentucky, and Ohio.",
+    "Tell us about your space — residential, commercial, or post-construction — and book your spot. Serving greater Louisville, KY.",
+  alternates: { canonical: "/quote" },
 };
 
 export default function QuotePage() {

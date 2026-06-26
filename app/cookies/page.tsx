@@ -5,9 +5,10 @@ import { PageHeader } from "@/components/PageHeader";
 import { LegalSection } from "@/components/LegalSection";
 
 export const metadata: Metadata = {
-  title: "Cookie Policy | OCS — Ottri Cleaning Services",
+  title: "Cookie Policy",
   description:
     "How ottri.net uses cookies and works with third-party services like Resend.",
+  alternates: { canonical: "/cookies" },
 };
 
 export default function CookiesPage() {

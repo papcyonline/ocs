@@ -8,15 +8,19 @@ import {
   Envelope,
 } from "@phosphor-icons/react/dist/ssr";
 import { site } from "@/lib/site";
+import { locations } from "@/lib/locations";
 import { Logo } from "@/components/Logo";
 
 const footerNav = [
   {
     title: "Services",
     links: [
-      { label: "Residential", href: "/#services" },
-      { label: "Commercial", href: "/#services" },
-      { label: "Post-Construction", href: "/#services" },
+      { label: "Residential", href: "/services/residential-cleaning" },
+      { label: "Commercial", href: "/services/commercial-cleaning" },
+      {
+        label: "Post-Construction",
+        href: "/services/post-construction-cleaning",
+      },
     ],
   },
   {
@@ -24,7 +28,7 @@ const footerNav = [
     links: [
       { label: "How it works", href: "/#how-it-works" },
       { label: "About", href: "/#about" },
-      { label: "Testimonials", href: "/#testimonials" },
+      { label: "Blog", href: "/blog" },
       { label: "FAQ", href: "/faq" },
     ],
   },
@@ -117,7 +121,26 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-14 h-px w-full bg-white/10 md:mt-20" />
+        <div className="mt-14 h-px w-full bg-white/10 md:mt-16" />
+
+        <div className="mt-8">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.25em] text-oranje-400">
+            Service areas
+          </p>
+          <div className="mt-5 flex flex-wrap gap-x-6 gap-y-3">
+            {locations.map((loc) => (
+              <a
+                key={loc.slug}
+                href={`/cleaning/${loc.slug}`}
+                className="text-sm text-white/80 transition-colors hover:text-white"
+              >
+                {loc.name}
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-12 h-px w-full bg-white/10 md:mt-14" />
 
         <div className="mt-6 flex flex-col gap-3 text-xs text-white/60 sm:flex-row sm:items-center sm:justify-between">
           <p>

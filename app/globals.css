@@ -101,3 +101,80 @@ section[id] {
 .prose-ocs a:hover {
   color: var(--color-oranje-700);
 }
+
+/* Long-form article styling for blog posts (rendered from markdown). */
+.prose-blog {
+  color: rgb(64 64 64);
+  font-size: 1.0625rem;
+  line-height: 1.8;
+}
+.prose-blog > * + * {
+  margin-top: 1.25rem;
+}
+.prose-blog > h2 {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: rgb(0 0 0);
+  margin-top: 3rem;
+  letter-spacing: -0.01em;
+}
+@media (min-width: 768px) {
+  .prose-blog > h2 {
+    font-size: 2.125rem;
+  }
+}
+.prose-blog > h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.25rem;
+  color: rgb(0 0 0);
+  margin-top: 2.5rem;
+}
+.prose-blog > ul {
+  list-style: disc;
+  padding-left: 1.5rem;
+}
+.prose-blog > ol {
+  list-style: decimal;
+  padding-left: 1.5rem;
+}
+.prose-blog > ul > li,
+.prose-blog > ol > li {
+  margin-top: 0.5rem;
+  padding-left: 0.25rem;
+}
+.prose-blog > blockquote {
+  border-left: 3px solid var(--color-oranje-500);
+  padding-left: 1.25rem;
+  font-style: italic;
+  color: rgb(38 38 38);
+}
+.prose-blog table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+.prose-blog th,
+.prose-blog td {
+  text-align: left;
+  padding: 0.7rem 1.25rem 0.7rem 0;
+  border-bottom: 1px solid rgb(229 229 229);
+  vertical-align: top;
+}
+.prose-blog th {
+  color: rgb(0 0 0);
+  font-weight: 600;
+}
+.prose-blog strong {
+  color: rgb(0 0 0);
+  font-weight: 600;
+}
+.prose-blog a {
+  color: var(--color-oranje-600);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.prose-blog a:hover {
+  color: var(--color-oranje-700);
+}

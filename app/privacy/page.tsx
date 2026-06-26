@@ -5,9 +5,10 @@ import { PageHeader } from "@/components/PageHeader";
 import { LegalSection } from "@/components/LegalSection";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | OCS — Ottri Cleaning Services",
+  title: "Privacy Policy",
   description:
     "How Ottri Cleaning Services collects, uses, and protects information you share through ottri.net.",
+  alternates: { canonical: "/privacy" },
 };
 
 export default function PrivacyPage() {
